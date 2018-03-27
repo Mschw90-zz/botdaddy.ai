@@ -6,6 +6,10 @@ const mongoose = require('mongoose');
 
 mongoose.connect(process.env.MONGODB_URI);
 
+const mongoose = require('mongoose');	
+
+mongoose.connect(process.env.MONGODB_URI);
+
 
 app.use(bodyParser.json());
 // app.use(bodyParser.urlencoded({ extended: false }));
