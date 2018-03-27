@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 app.use(require('cookie-parser')());
 app.use(require('body-parser').urlencoded({ extended: true }));
 
-app.use('/', routes);
+// app.use('/', routes);
 
 app.listen(PORT, error => {
     error
