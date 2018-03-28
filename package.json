@@ -23,10 +23,15 @@
     "nodemon": "^1.17.2"
   },
   "dependencies": {
+    "@slack/client": "^4.1.0",
+    "apiai": "^4.0.3",
+    "axios": "^0.18.0",
     "body-parser": "^1.18.2",
     "cookie-parser": "^1.4.3",
     "express": "^4.16.3",
     "google-auth-library": "^0.12.0",
-    "googleapis": "^25.0.0"
+    "googleapis": "^25.0.0",
+    "mongoose": "^5.0.11",
+    "dialogflow": "^0.1.0"
   }
 }
