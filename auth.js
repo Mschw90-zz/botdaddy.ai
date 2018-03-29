@@ -66,9 +66,3 @@ app.get('/oauth', function(req, res) {
     }
   });
 });
-
-app.listen(PORT, error => {
-    error
-    ? console.error(error)
-    : console.info(`🌎\nListening on port ${PORT}. Visit http://localhost:${PORT}/ in your browser.`);
-});
