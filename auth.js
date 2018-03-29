@@ -23,6 +23,7 @@ var scopes = [
   'https://www.googleapis.com/auth/calendar'
 ];
 
+//needs to send /connect?slack_id=message.user
 app.get('/connect', function(req, res) {
   var url = oauth2Client.generateAuthUrl({
     // 'online' (default) or 'offline' (gets refresh_token)
@@ -57,13 +58,17 @@ app.get('/oauth', function(req, res) {
       });
       newUser.save((err, result) => {
         if (err) {
-          console.log('there was error');
           res.json({success: false, err: err})
         } else {
-          console.log('it saved');
           res.json({success: true})
         }
       })
     }
   });
+});
+
+app.listen(PORT, error => {
+    error
+    ? console.error(error)
+    : console.info(`🌎\nListening on port ${PORT}. Visit http://localhost:${PORT}/ in your browser.`);
 });
