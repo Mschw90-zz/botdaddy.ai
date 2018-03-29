@@ -35,7 +35,7 @@ app.get('/connect', function(req, res) {
       // auth_id: req.query.auth_id,
       slack_id: req.query.slack_id
     })),
-    redirect_uri: 'https://40c97f71.ngrok.io/oauth'
+    redirect_uri: 'https://be2ed6af.ngrok.io/oauth'
   });
   res.redirect(url);
 })
@@ -66,10 +66,4 @@ app.get('/oauth', function(req, res) {
       })
     }
   });
-});
-
-app.listen(PORT, error => {
-    error
-    ? console.error(error)
-    : console.info(`🌎\nListening on port ${PORT}. Visit http://localhost:${PORT}/ in your browser.`);
 });
