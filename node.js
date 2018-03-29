@@ -5,6 +5,8 @@ const botToken = process.env.API_AI_TOKEN;
 const apiai = require('apiai');
 const app = apiai(botToken);
 
+//This code allows you to receive a message from the slackbot and respond to it.
+
 // The client is initialized and then started to get an active connection to the platform
 const token = process.env.SLACK_BOT_TOKEN || '';
 

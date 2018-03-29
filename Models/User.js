@@ -6,10 +6,16 @@ const User = mongoose.model('User', {
     required: true,
     unique: true
   },
-  slack_name: {
-    type: String,
+  // slack_name: {
+  //   type: String,
+  // },
+  // google_profile: {
+  //   type: String
+  // },
+  access_token: {
+    type: String
   },
-  google_profile: {
+  refresh_token: {
     type: String
   }
 });
