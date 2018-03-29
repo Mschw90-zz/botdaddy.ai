@@ -12,7 +12,6 @@ const User = require('./Models/User');
 
 mongoose.connect(process.env.MONGODB_URI);
 
-
 //This code allows you to receive a message from the slackbot and respond to it.
 // The client is initialized and then started to get an active connection to the platform
 
@@ -64,6 +63,7 @@ rtm.on('message', (event) => {
     // console.log('DATA', result.result.parameters.date)
   })
   .catch((err) => console.log('error', err))
+
 });
 
 //
