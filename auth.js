@@ -1,5 +1,5 @@
 const express = require('express');
-const app = express();
+const router = express();
 const User = require('./Models/User');
 const mongoose = require('mongoose');
 const PORT = process.env.PORT || 3000;
@@ -13,7 +13,7 @@ const scopes = [
 ];
 
 //needs to send /connect?slack_id=message.user
-app.get('/connect', function(req, res) {
+router.get('/connect', function(req, res) {
   const url = oauth2Client.generateAuthUrl({
     // 'online' (default) or 'offline' (gets refresh_token)
     access_type: 'offline',
@@ -30,7 +30,7 @@ app.get('/connect', function(req, res) {
   res.redirect(url);
 })
 
-app.get('/oauth', function(req, res) {
+router.get('/oauth', function(req, res) {
   //save the code and then user information into database
   //if it doesn't exist, initiate oauth process
   //if it doesn't, ask the user to sign in again
@@ -55,4 +55,4 @@ app.get('/oauth', function(req, res) {
   });
 });
 
-app.listen(3000);
+exports = router; 
