@@ -85,7 +85,7 @@ rtm.on('message', (event) => {
   .then((result) => {
     User.findOne({ slack_id: event.user }).then((user) => {
       if (user === null) {
-        rtm.addOutgoingEvent(true, 'message', { text:'Grant google access pls https://be2ed6af.ngrok.io/connect?slack_id=' + event.user, channel: event.channel, reply_broadcast: true }).then((res) => {
+        rtm.addOutgoingEvent(true, 'message', { text:'Grant google access pls https://337b6e0b.ngrok.io/connect?slack_id=' + event.user, channel: event.channel, reply_broadcast: true }).then((res) => {
             // `res` contains information about the posted message
             console.log('Message sent: ', res.ts);
           })
