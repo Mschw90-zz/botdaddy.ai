@@ -53,8 +53,7 @@ app.get('/oauth', function(req, res) {
       oauth2Client.setCredentials(tokens);
       var newUser = new User({
         slack_id: slack_id,
-        access_token: tokens.access_token,
-        refresh_token: tokens.refresh_token
+        tokens: tokens
       });
       newUser.save((err, result) => {
         if (err) {
@@ -65,10 +64,4 @@ app.get('/oauth', function(req, res) {
       })
     }
   });
-});
-
-app.listen(PORT, error => {
-    error
-    ? console.error(error)
-    : console.info(`🌎\nListening on port ${PORT}. Visit http://localhost:${PORT}/ in your browser.`);
 });
