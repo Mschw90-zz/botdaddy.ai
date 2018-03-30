@@ -7,8 +7,7 @@ const botToken = process.env.API_AI_TOKEN;
 const token = process.env.SLACK_TOKEN;
 const mongoose = require('mongoose');
 const urlencodedParser = bodyParser.urlencoded({ extended: false })
-const bot = require('../node.js');
-
+const auth = require('../auth.js');
 
 mongoose.connect(process.env.MONGODB_URI);
 
