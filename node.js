@@ -1,6 +1,6 @@
 "use strict";
 
-const { RTMClient, WebClient, RTM_EVENTS } = require('@slack/client');
+const { RTMClient, WebClient } = require('@slack/client');
 const botToken = process.env.API_AI_TOKEN;
 const token = process.env.SLACK_BOT_TOKEN || '';
 const apiai = require('apiai');
@@ -8,7 +8,7 @@ const app = apiai(botToken);
 const rtm = new RTMClient(token);
 const web = new WebClient(token);
 const mongoose = require('mongoose');
-var fs = require('fs');
+const fs = require('fs');
 const User = require('./Models/User');
 const google = require('googleapis').google;
 const calendar = google.calendar('v3');
@@ -18,9 +18,9 @@ require('./src/index.js')
 // const OAuth2 = google.auth.OAuth2;
 const googleCal = require('./auth.js');
 
-var content = fs.readFileSync('client_secret.json');
-var credentials = JSON.parse(content);
-var oauth2Client = new OAuth2(
+const content = fs.readFileSync('client_secret.json');
+const credentials = JSON.parse(content);
+const oauth2Client = new OAuth2(
   credentials.web.client_id,
   credentials.web.client_secret,
   credentials.web.redirect_uris[0]
@@ -81,7 +81,7 @@ rtm.on('message', (event) => {
   if (event.bot_id) {
     return;
   }
-  var message = event.text;
+  let message = event.text;
   conversation(message, event.user)
   .then((result) => {
     User.findOne({ slack_id: event.user }).then((user) => {
@@ -103,7 +103,7 @@ rtm.on('message', (event) => {
       auth: oauth2Client,
       calendarId: 'primary',
       resource: calEvent,
-    }, function(err, event) {
+    }, (err, event) => {
       if (err) {
         console.log('There was an error contacting the Calendar service: ' + err);
         return;
