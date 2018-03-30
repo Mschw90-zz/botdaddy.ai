@@ -1,20 +1,20 @@
-var express = require('express');
-var app = express();
-var User = require('./Models/User');
-var mongoose = require('mongoose');
-var PORT = process.env.PORT || 3000;
-var oauth2Client = require('./node.js');
+const express = require('express');
+const app = express();
+const User = require('./Models/User');
+const mongoose = require('mongoose');
+const PORT = process.env.PORT || 3000;
+const oauth2Client = require('./node.js');
 
 mongoose.connect(process.env.MONGODB_URI);
 
-var scopes = [
+const scopes = [
   // 'https://www.googleapis.com/auth/userinfo.profile',
   'https://www.googleapis.com/auth/calendar'
 ];
 
 //needs to send /connect?slack_id=message.user
 app.get('/connect', function(req, res) {
-  var url = oauth2Client.generateAuthUrl({
+  const url = oauth2Client.generateAuthUrl({
     // 'online' (default) or 'offline' (gets refresh_token)
     access_type: 'offline',
     prompt: 'consent',
@@ -35,12 +35,12 @@ app.get('/oauth', function(req, res) {
   //if it doesn't exist, initiate oauth process
   //if it doesn't, ask the user to sign in again
   //req.query.code --> authorization code, allows you to obtain credentials
-  oauth2Client.getToken(req.query.code, function (err, tokens) {
+  oauth2Client.getToken(req.query.code, (err, tokens) => {
   // Now tokens contains an access_token and an optional refresh_token. Save them.
     if (!err) {
-      var slack_id = JSON.parse(decodeURIComponent(req.query.state)).slack_id
+      const slack_id = JSON.parse(decodeURIComponent(req.query.state)).slack_id
       oauth2Client.setCredentials(tokens);
-      var newUser = new User({
+      const newUser = new User({
         slack_id: slack_id,
         tokens: tokens
       });
