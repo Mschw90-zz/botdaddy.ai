@@ -12,7 +12,10 @@ const fs = require('fs');
 const User = require('./Models/User');
 const google = require('googleapis').google;
 const calendar = google.calendar('v3');
-const OAuth2 = google.auth.OAuth2;
+var OAuth2 = google.auth.OAuth2;
+require('./src/index.js')
+
+// const OAuth2 = google.auth.OAuth2;
 const googleCal = require('./auth.js');
 
 const content = fs.readFileSync('client_secret.json');
