@@ -52,8 +52,7 @@ app.get('/oauth', function(req, res) {
       oauth2Client.setCredentials(tokens);
       var newUser = new User({
         slack_id: slack_id,
-        access_token: tokens.access_token,
-        refresh_token: tokens.refresh_token
+        tokens: tokens
       });
       newUser.save((err, result) => {
         if (err) {
@@ -67,3 +66,5 @@ app.get('/oauth', function(req, res) {
     }
   });
 });
+
+// export default app;
