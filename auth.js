@@ -3,7 +3,9 @@ const router = express();
 const User = require('./Models/User');
 const mongoose = require('mongoose');
 const PORT = process.env.PORT || 3000;
-const oauth2Client = require('./node.js');
+const { oauth2Client } = require('./node.js');
+const { slack } = require('./src/index.js');
+
 
 mongoose.connect(process.env.MONGODB_URI);
 
@@ -14,7 +16,7 @@ const scopes = [
 
 //needs to send /connect?slack_id=message.user
 router.get('/connect', function(req, res) {
-  const url = oauth2Client.generateAuthUrl({
+  let url = oauth2Client.generateAuthUrl({
     // 'online' (default) or 'offline' (gets refresh_token)
     access_type: 'offline',
     prompt: 'consent',
@@ -25,7 +27,7 @@ router.get('/connect', function(req, res) {
       // auth_id: req.query.auth_id,
       slack_id: req.query.slack_id
     })),
-    redirect_uri: 'https://337b6e0b.ngrok.io/oauth'
+    redirect_uri: 'https://d437ba8c.ngrok.io/oauth'
   });
   res.redirect(url);
 })
@@ -38,7 +40,7 @@ router.get('/oauth', function(req, res) {
   oauth2Client.getToken(req.query.code, (err, tokens) => {
   // Now tokens contains an access_token and an optional refresh_token. Save them.
     if (!err) {
-      const slack_id = JSON.parse(decodeURIComponent(req.query.state)).slack_id
+      let slack_id = JSON.parse(decodeURIComponent(req.query.state)).slack_id
       oauth2Client.setCredentials(tokens);
       const newUser = new User({
         slack_id: slack_id,
@@ -55,4 +57,8 @@ router.get('/oauth', function(req, res) {
   });
 });
 
-exports = router;
+router.listen(PORT, error => {
+    error
+    ? console.error(error)
+    : console.info(`🌎\nListening on port ${PORT}. Visit http://localhost:${PORT}/ in your browser.`);
+});

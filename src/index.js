@@ -6,8 +6,7 @@ const { RTMClient, WebClient } = require('@slack/client');
 const botToken = process.env.API_AI_TOKEN;
 const token = process.env.SLACK_TOKEN;
 const mongoose = require('mongoose');
-const urlencodedParser = bodyParser.urlencoded({ extended: false })
-const auth = require('../auth.js');
+const urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 mongoose.connect(process.env.MONGODB_URI);
 // app.use(bodyParser.json());
@@ -85,8 +84,4 @@ function sendMessageToSlackResponseURL(responseURL, JSONmessage){
     })
 }
 
-app.listen(PORT, error => {
-    error
-    ? console.error(error)
-    : console.info(`🌎\nListening on port ${PORT}. Visit http://localhost:${PORT}/ in your browser.`);
-});
+export { app };
