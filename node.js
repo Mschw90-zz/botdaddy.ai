@@ -8,19 +8,30 @@ const app = apiai(botToken);
 const rtm = new RTMClient(token);
 const web = new WebClient(token);
 const mongoose = require('mongoose');
+var fs = require('fs');
 const User = require('./Models/User');
-const google = require('googleapis');
+const google = require('googleapis').google;
 const calendar = google.calendar('v3');
+var OAuth2 = google.auth.OAuth2;
+
 // const OAuth2 = google.auth.OAuth2;
 const googleCal = require('./auth.js');
 
-mongoose.connect(process.env.MONGODB_URI);
+var content = fs.readFileSync('client_secret.json');
+var credentials = JSON.parse(content);
+var oauth2Client = new OAuth2(
+  credentials.web.client_id,
+  credentials.web.client_secret,
+  credentials.web.redirect_uris[0]
+);
+
+// mongoose.connect(process.env.MONGODB_URI);
 
 //This code allows you to receive a message from the slackbot and respond to it.
 // The client is initialized and then started to get an active connection to the platform
 rtm.start();
 
-const event = {
+const calEvent = {
   'summary': 'Google I/O 2015',
   'location': '800 Howard St., San Francisco, CA 94103',
   'description': 'A chance to hear more about Google\'s developer products.',
@@ -85,18 +96,19 @@ rtm.on('message', (event) => {
       console.log(JSON.stringify(result, null, 2), 'result');
       //bot receives the response, bot hits google cal api to make event
 
+    oauth2Client.setCredentials(user.tokens);
 
-      calendar.events.insert({
-        auth: googleCal.oauth2Client,
-        calendarId: 'primary',
-        resource: event,
-      }, function(err, event) {
-        if (err) {
-          console.log('There was an error contacting the Calendar service: ' + err);
-          return;
-        }
-        console.log('Event created: %s', event.htmlLink);
-      });
+    calendar.events.insert({
+      auth: oauth2Client,
+      calendarId: 'primary',
+      resource: calEvent,
+    }, function(err, event) {
+      if (err) {
+        console.log('There was an error contacting the Calendar service: ' + err);
+        return;
+      }
+      console.log('Event created: %s', event.data.htmlLink);
+    });
     })
     // .then((user) => {
     //   console.log("USER", user);
@@ -117,4 +129,4 @@ rtm.on('message', (event) => {
 //   .catch(console.error);
 // });
 
-// export default rtm;
+exports = oauth2Client;
