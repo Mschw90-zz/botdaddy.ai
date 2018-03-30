@@ -1,22 +1,11 @@
-var fs = require('fs');
-var google = require('googleapis');
-var OAuth2 = google.auth.OAuth2;
-var calendar = google.calendar('v3');
 var express = require('express');
 var app = express();
 var User = require('./Models/User');
 var mongoose = require('mongoose');
 var PORT = process.env.PORT || 3000;
+var oauth2Client = require('./node.js');
 
 mongoose.connect(process.env.MONGODB_URI);
-
-var content = fs.readFileSync('client_secret.json');
-var credentials = JSON.parse(content);
-var oauth2Client = new OAuth2(
-  credentials.web.client_id,
-  credentials.web.client_secret,
-  credentials.web.redirect_uris[0]
-);
 
 var scopes = [
   // 'https://www.googleapis.com/auth/userinfo.profile',
@@ -53,8 +42,7 @@ app.get('/oauth', function(req, res) {
       oauth2Client.setCredentials(tokens);
       var newUser = new User({
         slack_id: slack_id,
-        access_token: tokens.access_token,
-        refresh_token: tokens.refresh_token
+        tokens: tokens
       });
       newUser.save((err, result) => {
         if (err) {
@@ -67,8 +55,4 @@ app.get('/oauth', function(req, res) {
   });
 });
 
-app.listen(PORT, error => {
-    error
-    ? console.error(error)
-    : console.info(`🌎\nListening on port ${PORT}. Visit http://localhost:${PORT}/ in your browser.`);
-});
+app.listen(3000);

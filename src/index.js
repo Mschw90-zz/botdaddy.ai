@@ -2,15 +2,13 @@ const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3000;
 const bodyParser = require('body-parser');
-const { RTMClient, WebClient, RTM_EVENTS } = require('@slack/client');
-const apiai = require('apiai');
-const app = apiai(botToken);
+const { RTMClient, WebClient } = require('@slack/client');
 const botToken = process.env.API_AI_TOKEN;
 const token = process.env.SLACK_TOKEN;
 const mongoose = require('mongoose');
 const urlencodedParser = bodyParser.urlencoded({ extended: false })
 const bot = require('../node.js');
-const User = require('../Models/User');
+
 
 mongoose.connect(process.env.MONGODB_URI);
 
@@ -21,60 +19,7 @@ app.use(require('cookie-parser')());
 app.use(urlencodedParser);
 
 // app.use('/', routes);
-const rtm = new RTMClient(token);
-const web = new WebClient(token);
 
-rtm.start();
-
-
-const conversation = (message, user) => {
-  return new Promise((resolve, reject) => {
-    // console.log('USER', user, message);
-    var request = app.textRequest(message, {
-      sessionId: user
-    });
-    request.on('response', function(response) {
-      resolve(response)
-    });
-    request.on('error', function(error) {
-      reject(error)
-    });
-    request.end();
-  });
-}
-
-rtm.on('message', (event) => {
-  // For structure of `event`, see https://api.slack.com/events/reaction_added
-  if (event.bot_id) {
-    return;
-  }
-  // console.log(event);
-  var message = event.text;
-  conversation(message, event.user)
-  .then((result) => {
-    console.log("RESULT", result);
-    // console.log("im here", event);
-    User.findOne({ slack_id: event.user }).then((user) => {
-      console.log("USER", user);
-      if (user === null) {
-        rtm.addOutgoingEvent(true, 'message', { text:'Grant google access pls https://be2ed6af.ngrok.io/connect?slack_id=' + event.user, channel: event.channel, reply_broadcast: true }).then((res) => {
-            // `res` contains information about the posted message
-            console.log('Message sent: ', res.ts);
-          })
-          .catch(console.error);
-        // });
-      }
-    })
-    // .then((user) => {
-    //   console.log("USER", user);
-    // })
-    // .catch((err) => console.log('USER error', err))
-    // console.log(JSON.stringify(result, null, 2), 'result');
-    // console.log('DATA', result.result.parameters.date)
-  })
-  .catch((err) => console.log('error', err))
-
-});
 
 
 app.post('/slack/actions', urlencodedParser, (req, res) =>{

@@ -12,11 +12,8 @@ const User = mongoose.model('User', {
   // google_profile: {
   //   type: String
   // },
-  access_token: {
-    type: String
-  },
-  refresh_token: {
-    type: String
+  tokens: {
+    type: Object
   }
 });
 
