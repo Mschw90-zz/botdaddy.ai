@@ -1,6 +1,6 @@
 "use strict";
 
-const { RTMClient, WebClient } = require('@slack/client');
+const { RTMClient, WebClient, RTM_EVENT } = require('@slack/client');
 const botToken = process.env.API_AI_TOKEN;
 const token = process.env.SLACK_BOT_TOKEN || '';
 const apiai = require('apiai');
@@ -12,10 +12,7 @@ const fs = require('fs');
 const User = require('./Models/User');
 const google = require('googleapis').google;
 const calendar = google.calendar('v3');
-var OAuth2 = google.auth.OAuth2;
-
-// const OAuth2 = google.auth.OAuth2;
-const googleCal = require('./auth.js');
+const OAuth2 = google.auth.OAuth2;
 
 const content = fs.readFileSync('client_secret.json');
 const credentials = JSON.parse(content);
@@ -85,7 +82,7 @@ rtm.on('message', (event) => {
   .then((result) => {
     User.findOne({ slack_id: event.user }).then((user) => {
       if (user === null) {
-        rtm.addOutgoingEvent(true, 'message', { text:'Grant google access pls https://337b6e0b.ngrok.io/connect?slack_id=' + event.user, channel: event.channel, reply_broadcast: true }).then((res) => {
+        return rtm.addOutgoingEvent(true, 'message', { text:'Grant google access pls https://d437ba8c.ngrok.io/connect?slack_id=' + event.user, channel: event.channel, reply_broadcast: true }).then((res) => {
             // `res` contains information about the posted message
             console.log('Message sent: ', res.ts);
           })
@@ -129,4 +126,4 @@ rtm.on('message', (event) => {
 //   .catch(console.error);
 // });
 
-exports = oauth2Client;
+export { oauth2Client };
