@@ -23,6 +23,7 @@ var scopes = [
   'https://www.googleapis.com/auth/calendar'
 ];
 
+//needs to send /connect?slack_id=message.user
 app.get('/connect', function(req, res) {
   var url = oauth2Client.generateAuthUrl({
     // 'online' (default) or 'offline' (gets refresh_token)
@@ -35,7 +36,7 @@ app.get('/connect', function(req, res) {
       // auth_id: req.query.auth_id,
       slack_id: req.query.slack_id
     })),
-    redirect_uri: 'https://40c97f71.ngrok.io/oauth'
+    redirect_uri: 'https://be2ed6af.ngrok.io/oauth'
   });
   res.redirect(url);
 })
@@ -57,10 +58,8 @@ app.get('/oauth', function(req, res) {
       });
       newUser.save((err, result) => {
         if (err) {
-          console.log('there was error');
           res.json({success: false, err: err})
         } else {
-          console.log('it saved');
           res.json({success: true})
         }
       })
