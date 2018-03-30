@@ -10,16 +10,10 @@ const urlencodedParser = bodyParser.urlencoded({ extended: false })
 const auth = require('../auth.js');
 
 mongoose.connect(process.env.MONGODB_URI);
-
-
 // app.use(bodyParser.json());
 // app.use(bodyParser.urlencoded({ extended: false }));
 app.use(require('cookie-parser')());
 app.use(urlencodedParser);
-
-// app.use('/', routes);
-
-
 
 app.post('/slack/actions', urlencodedParser, (req, res) =>{
     res.status(200).end() // best practice to respond with 200 status
@@ -90,7 +84,6 @@ function sendMessageToSlackResponseURL(responseURL, JSONmessage){
         }
     })
 }
-
 
 app.listen(PORT, error => {
     error
